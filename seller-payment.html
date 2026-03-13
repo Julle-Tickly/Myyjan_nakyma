@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Turku Festival | Tickly</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .seller-layout {
+            display: flex;
+            min-height: 100vh;
+            background-color: #F8F8FB;
+        }
+        .seller-sidebar {
+            width: 250px;
+            background-color: #FFFFFF;
+            border-right: 1px solid #E5E7EB;
+            padding: 1.5rem 0;
+        }
+        .seller-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .seller-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E5E7EB;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .seller-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .payment-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+            margin-bottom: 1.5rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1.5rem;
+        }
+        .order-summary {
+            margin-bottom: 2rem;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        .summary-label {
+            color: #6B7280;
+        }
+        .summary-value {
+            font-weight: 600;
+            color: #111827;
+        }
+        .summary-total {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            border-top: 2px solid #E5E7EB;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .payment-method {
+            padding: 1.5rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+        }
+        .payment-method:hover {
+            border-color: #D1D5DB;
+        }
+        .payment-method.selected {
+            border-color: #F97316;
+            background-color: #FEF3C7;
+        }
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .payment-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        .payment-description {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        .complete-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #10B981;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+        .complete-button:hover {
+            background-color: #059669;
+        }
+        .complete-button:disabled {
+            background-color: #D1D5DB;
+            cursor: not-allowed;
+        }
+        .back-button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #FFFFFF;
+            color: #6B7280;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-bottom: 1rem;
+        }
+        .back-button:hover {
+            background-color: #F9FAFB;
+            border-color: #D1D5DB;
+        }
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        .breadcrumb {
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin-bottom: 0.5rem;
+        }
+        .breadcrumb a {
+            color: #F97316;
+            text-decoration: none;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #6B7280;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        .nav-item:hover {
+            background-color: #F9FAFB;
+            color: #111827;
+        }
+        .nav-item.active {
+            background-color: #FEF3C7;
+            color: #F97316;
+            border-right: 3px solid #F97316;
+        }
+        .nav-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .logo {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+            margin-bottom: 1rem;
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .user-avatar {
+            width: 2rem;
+            height: 2rem;
+            background-color: #F97316;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="seller-layout">
+        <div class="seller-sidebar">
+            <div class="logo">
+                <div class="logo-text">Tickly</div>
+            </div>
+            <nav>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="seller-event-selection.html" class="nav-item active">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    Sell Tickets
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    Orders
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Customers
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    Reports
+                </a>
+            </nav>
+        </div>
+        <div class="seller-main">
+            <div class="seller-header">
+                <div>
+                    <div class="breadcrumb">
+                        <a href="seller-event-selection.html">Sell Tickets</a> / <a href="seller-ticket-selection.html">Turku Festival</a> / Payment
+                    </div>
+                    <h1 class="page-title">Payment</h1>
+                </div>
+                <div class="user-info">
+                    <span>Staff Member</span>
+                    <div class="user-avatar">SM</div>
+                </div>
+            </div>
+            <div class="seller-content">
+                <div class="payment-card">
+                    <h2 class="card-title">Order Summary</h2>
+                    <div class="order-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">Seat A1 - Section A</span>
+                            <span class="summary-value">€50.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Seat A2 - Section A</span>
+                            <span class="summary-value">€50.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Customer</span>
+                            <span class="summary-value">John Smith</span>
+                        </div>
+                        <div class="summary-item summary-total">
+                            <span>Total</span>
+                            <span>€100.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-card">
+                    <h2 class="card-title">Select Payment Method</h2>
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPayment(this, 'card')">
+                            <div class="payment-icon">💳</div>
+                            <div class="payment-name">Card Received</div>
+                            <div class="payment-description">Customer paid by card</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment(this, 'cash')">
+                            <div class="payment-icon">💵</div>
+                            <div class="payment-name">Cash Received</div>
+                            <div class="payment-description">Customer paid in cash</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment(this, 'invoice')">
+                            <div class="payment-icon">📄</div>
+                            <div class="payment-name">Invoice</div>
+                            <div class="payment-description">Send invoice later</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment(this, 'complimentary')">
+                            <div class="payment-icon">🎁</div>
+                            <div class="payment-name">Complimentary</div>
+                            <div class="payment-description">Free ticket</div>
+                        </div>
+                    </div>
+                    <button class="back-button" onclick="window.location.href='seller-ticket-selection.html'">
+                        ← Back to Seat Selection
+                    </button>
+                    <button class="complete-button" id="complete-btn" disabled onclick="window.location.href='seller-confirmation.html'">
+                        Complete Sale
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let selectedPayment = null;
+        
+        function selectPayment(element, method) {
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedPayment = method;
+            document.getElementById('complete-btn').disabled = false;
+        }
+    </script>
+</body>
+</html>
